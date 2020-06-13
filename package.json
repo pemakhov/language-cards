@@ -1,0 +1,28 @@
+{
+  "name": "language-cards",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "cz-conventional-changelog": "^3.2.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pemakhov/language-cards.git"
+  },
+  "author": "Serhii Pemakhov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pemakhov/language-cards/issues"
+  },
+  "homepage": "https://github.com/pemakhov/language-cards#readme",
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}
