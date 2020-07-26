@@ -1,4 +1,4 @@
-import { Injectable, ValidationPipe, HttpException, HttpStatus, Catch } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus, Catch } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { Repository, DeleteResult } from 'typeorm';
@@ -26,7 +26,6 @@ export class UsersService {
     const createdUser = new User();
 
     createdUser.email = createUserDto.email;
-    createdUser.nickname = createUserDto.nickname;
     createdUser.password = createUserDto.password;
 
     const errors = await validate(createdUser);
@@ -78,7 +77,6 @@ export class UsersService {
     const oldEmail = updatedUser.email;
 
     updatedUser.email = updateUserDto.email || updatedUser.email;
-    updatedUser.nickname = updateUserDto.nickname || updatedUser.nickname;
     updatedUser.password = updateUserDto.password || updatedUser.password;
 
     const duplicatedEmails = await this.usersRepository.find({ where: { email: updatedUser.email } });

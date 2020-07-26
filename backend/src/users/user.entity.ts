@@ -7,10 +7,6 @@ export class User {
   id: string;
 
   @Column()
-  @Length(2, 40)
-  nickname: string;
-
-  @Column()
   @IsEmail()
   email: string;
 

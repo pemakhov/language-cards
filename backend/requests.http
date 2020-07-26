@@ -1,0 +1,12 @@
+#
+GET http://localhost:5000/users
+
+###
+
+POST http://localhost:5000/users/create HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "ronaldo@uventus.com",
+  "password": "ronnythebest"
+}
