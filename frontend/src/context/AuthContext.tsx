@@ -14,7 +14,7 @@ export function useAuthUpdate() {
 }
 
 export function AuthProvider({ children }: any) {
-  const [isLoggedIn, setLoginState] = useState(true);
+  const [isLoggedIn, setLoginState] = useState(false);
 
   const updateLogin = () => {
     setLoginState((isLoggedIn) => !isLoggedIn);

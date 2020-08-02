@@ -1,0 +1,46 @@
+main.home-guest {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+
+  .container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 0 2rem;
+    font-size: 1.5rem;
+
+    section {
+      padding: 1rem;
+      margin: 0 0 3rem 0;
+      background-color: #f1ebda;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-gap: 1rem;
+
+      img {
+        height: auto;
+        width: 100%;
+      }
+
+      div {
+        ul, ol {
+          margin-left: 2rem;
+        }
+      }
+    }
+
+    section:nth-child(even) img {
+      order: 2;
+    }
+
+    @media(max-width: 600px) {
+      section {
+        display: block;
+
+        div {
+          margin-top: 1rem;
+        }
+      }
+    }
+  }
+}

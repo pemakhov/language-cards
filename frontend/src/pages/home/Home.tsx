@@ -1,20 +1,22 @@
 import * as React from 'react';
 import './Home.scss';
-import { NavBar } from '../../navbar/NavBar';
+import { NavBar } from '../../elements/navbar/NavBar';
+import { HomeGuest } from './HomeGuest';
+import { Header, IHeaderProps } from '../../elements/Header';
 
 export interface IHomeProps {
+
 }
 
-export class Home extends React.Component<IHomeProps> {
+export const Home = (props: IHeaderProps) => {
+  const headerValue = 'Learn English the Hard Way';
+  const headerExplanation = 'A website for those, who want to enrich their vocabulary';
 
-  public render() {
     return (
       <div>
         <NavBar />
-        <div className="container-md mt-3">
-          hello world
-        </div>
+        <Header value={headerValue} explanation={headerExplanation} />
+        <HomeGuest />
       </div>
     );
-  }
 }

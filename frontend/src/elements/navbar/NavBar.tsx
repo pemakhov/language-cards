@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./NavBar.scss";
-import { useAuth, useAuthUpdate } from "../context/AuthContext";
+import { useAuth, useAuthUpdate } from "../../context/AuthContext";
 
 export const NavBar = () => {
   const isLoggedIn = useAuth();
@@ -45,8 +45,8 @@ export const NavBar = () => {
         </Link>
       </li>
       <li>
-        <Link to="/login" className="nav-link">
-          Log In
+        <Link to="/signup" className="nav-link">
+          Sign Up
         </Link>
       </li>
     </>

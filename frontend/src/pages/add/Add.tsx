@@ -1,5 +1,5 @@
 import * as React from "react";
-import { NavBar } from "../../navbar/NavBar";
+import { NavBar } from "../../elements/navbar/NavBar";
 import "./Add.scss";
 import { useAuth, useAuthUpdate } from "../../context/AuthContext";
 

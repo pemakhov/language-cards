@@ -1,7 +1,7 @@
 import React from "react";
 import "./Auth.scss";
 
-export interface ILoginProps {
+export interface ISignupProps {
   email: string;
   password: string;
   emailError: string;
@@ -11,12 +11,12 @@ export interface ILoginProps {
   handleSubmit: (event: any) => void;
 }
 
-export const Login = (props: ILoginProps) => {
+export const Signup = (props: ISignupProps) => {
   return (
     <div className="auth-wrapper">
-      <div className="auth-container">
+      <div className="auth-container signup-container">
         <form className="auth-form">
-          <h3 className="auth_form__header mb-3">Input Your Account Data to Log In</h3>
+          <h3 className="auth_form__header mb-3">Input Your Account Data to Sign Up</h3>
           <div className="input-group">
             <input
               type="email"
@@ -47,13 +47,10 @@ export const Login = (props: ILoginProps) => {
             className="btn btn-primary btn-block mb-3"
             onClick={props.handleSubmit}
           >
-            Sign in
+            Sign Up
           </button>
           <span>
-            Forgot password? <a href="/restore-password">Restore it.</a>
-          </span>
-          <span>
-            Don't have an account? <a href="/signup">Sign up!</a>
+            Already have an account? <a href="/login">Log In</a>
           </span>
         </form>
       </div>
