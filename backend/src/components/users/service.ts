@@ -1,5 +1,5 @@
 import UserModel from './model';
-import { User } from './UserDTO';
+import { User } from './IUserDTO';
 
 /**
  * Gets the list of all users

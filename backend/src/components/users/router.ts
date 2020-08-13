@@ -1,10 +1,17 @@
 import { Router } from 'express';
+import UserComponent from '../users';
 
 const router: Router = Router();
 
-router.get('/', (req, res, next) => {
+router.get('/hello', (req, res, next) => {
   console.log('usersRouter works');
   res.send('hello users')
 });
+
+router.get('/', UserComponent.findAll);
+
+router.get('/:id', UserComponent.findById);
+
+router.post('/', UserComponent.create);
 
 export default router;

@@ -11,10 +11,11 @@ const connectOptions: mongoose.ConnectionOptions = {
   // for reconnectTries times
   reconnectTries: Number.MAX_VALUE,
   reconnectInterval: 1000,
-  // flag to allow users to fall back to the old
-  // parser if they find a bug in the new parse
-  useNewUrlParser: true,
+  // custom flags
   useUnifiedTopology: true,
+  useNewUrlParser: true,
+  useFindAndModify: false,
+  useCreateIndex: true,
 };
 
 export default mongoose.createConnection(MONGO_URI, connectOptions);

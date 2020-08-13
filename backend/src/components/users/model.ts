@@ -7,6 +7,7 @@ const UserSchema = new Schema(
       type: String,
       trim: true,
       required: true,
+      unique: true,
     },
     password: {
       type: String,
@@ -19,4 +20,4 @@ const UserSchema = new Schema(
   }
 );
 
-export default connection.model('UserModel', UserSchema);
+export default connection.model("UserModel", UserSchema);
