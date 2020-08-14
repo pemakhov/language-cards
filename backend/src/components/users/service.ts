@@ -33,8 +33,8 @@ const create = (profile: User) => {
  * @param {User} newProfile 
  * @returns {Promise<void>}
  */
-const updateById = (id: string, newProfile: User) => {
-  return UserModel.updateOne({id}, newProfile).exec();
+const updateById = (_id: string, newProfile: User) => {
+  return UserModel.updateOne({ _id }, newProfile).exec();
 }
 
 /**
@@ -42,8 +42,8 @@ const updateById = (id: string, newProfile: User) => {
  * @param {string} id 
  * @returns {Promise<void>}
  */
-const deleteById = (id: string) => {
-  return UserModel.deleteOne({id}).exec();
+const deleteById = (_id: string) => {
+  return UserModel.deleteOne({ _id }).exec();
 }
 
 export default {

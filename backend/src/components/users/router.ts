@@ -14,4 +14,6 @@ router.get('/:id', UserComponent.findById);
 
 router.post('/', UserComponent.create);
 
+router.post('/update', UserComponent.updateById);
+
 export default router;

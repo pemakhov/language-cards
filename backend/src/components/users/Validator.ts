@@ -10,11 +10,18 @@ export default {
     }).validate({ id });
   },
 
-  create(profile: User) {
+  create(user: User) {
     return Joi.object({
       email: Joi.string().email(),
       password: Joi.string().min(6).max(32),
-    }).validate(profile);
-  }
+    }).validate(user);
+  },
 
+  updateById(user: User) {
+    return Joi.object({
+      id: Types.ObjectId,
+      email: Joi.string().email(),
+      password: Joi.string().min(6).max(32),
+    }).validate(user);
+  },
 }
