@@ -2,6 +2,7 @@ import express from 'express';
 import http from 'http';
 import path from 'path';
 import UsersRouter from '../components/users/router';
+import AuthRouter from '../components/auth/router';
 
 /**
  * Path to frontend build directory
@@ -24,6 +25,8 @@ export default class Router {
      * User router
      */
     app.use('/api/users', UsersRouter);
+
+    app.use('/api/auth', AuthRouter);
 
     /**
      * Frontend static resources

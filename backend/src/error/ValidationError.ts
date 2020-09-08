@@ -5,7 +5,7 @@
 export default class ValidationError extends Error {
   /**
    * The class constructor
-   * @param {string} message 
+   * @param message 
    */
   constructor(message: string) {
     super();

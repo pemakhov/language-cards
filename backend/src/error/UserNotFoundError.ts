@@ -1,11 +1,10 @@
 /**
- * Class representing validation error
+ * Class representing user not found error
  * @extends Error
  */
 export default class UserNotFoundError extends Error {
   /**
    * The class constructor
-   * @param {string} message 
    */
   constructor() {
     super();

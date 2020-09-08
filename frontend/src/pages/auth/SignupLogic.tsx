@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Redirect } from "react-router-dom";
 import { useAuth, useAuthUpdate } from "../../context/AuthContext";
 import { Signup } from "./Signup";
@@ -11,6 +11,8 @@ export const SignupLogic = () => {
   const [passwordError, updatePasswordError] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const inputIsValid = { email: false, password: false };
 
   const handleEmailChange = (event: React.ChangeEvent) => {
     updateEmailError("");
@@ -26,9 +28,11 @@ export const SignupLogic = () => {
 
   const validateEmail = () => {
     const emailPattern = /(.+)@(.+){2,}\.(.+){2,}/;
-    const wrongEmailMessage = "Please, provide a valid email address";
-    const error = emailPattern.test(email) ? "" : wrongEmailMessage;
-    updateEmailError(error);
+    const wrongEmailMessage = emailPattern.test(email)
+      ? ""
+      : "Please, provide a valid email address";
+    inputIsValid.email = wrongEmailMessage.length === 0;
+    updateEmailError(wrongEmailMessage);
   };
 
   const validatePassword = () => {
@@ -40,27 +44,21 @@ export const SignupLogic = () => {
     } else if (!/[a-zA-Z]/.test(password)) {
       wrongPasswordMessage = "Should contain at least one letter";
     }
+    inputIsValid.password = wrongPasswordMessage.length === 0;
     updatePasswordError(wrongPasswordMessage);
   };
 
-  const requestToken = () => {
+  const createUser = () => {
     console.log("sending request");
     const data = { email, password };
     const xhr = new XMLHttpRequest();
-    xhr.open("POST", "/users/create", true);
+    xhr.open("POST", "api/users/", true);
 
     //Send the proper header information along with the request
     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhr.addEventListener("load", () => console.log(xhr.responseText));
 
-    xhr.onreadystatechange = function () {
-      // Call a function when the state changes.
-      if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-        console.log(this);
-      }
-    };
     xhr.send(JSON.stringify(data));
-    // xhr.send(new Int8Array());
-    // xhr.send(document);
   };
 
   const handleSubmit = (event: any) => {
@@ -68,16 +66,11 @@ export const SignupLogic = () => {
     validateEmail();
     validatePassword();
 
-    if (emailError.length !== 0 || passwordError.length !== 0) {
-      console.log(`don't send a request`);
+    if (!inputIsValid.email || !inputIsValid.password) {
       return;
     }
 
-    // requestToken();
-    setTimeout(() => {
-      isLoggedIn = true;
-      updateLogin && updateLogin(isLoggedIn);
-    }, 2000);
+    createUser();
   };
 
   if (isLoggedIn) {

@@ -1,14 +1,17 @@
 import express from "express";
 import UserService from "./service";
 import UserValidator from "./Validator";
+import bcrypt from 'bcrypt';
 import ValidationError from "../../error/ValidationError";
 import UserNotFoundError from "../../error/UserNotFoundError";
+import { matchAndSendErrorResponse } from "./errorHandler";
 
 /**
- * Finds and return the array of all users
+ * Find all users
  * @param req
  * @param res
  * @param next
+ * @returns the array of all users
  */
 const findAll = async (
   req: express.Request,
@@ -34,6 +37,7 @@ const findAll = async (
  * @param req
  * @param res
  * @param next
+ * @returns the user object
  */
 const findById = async (
   req: express.Request,
@@ -41,19 +45,13 @@ const findById = async (
   next: express.NextFunction
 ) => {
   try {
-    /**
-     * Result of ID validation . Undefined if valid.
-     */
-    const { error } = UserValidator.findById(req.params.id);
+    const { error } = UserValidator.findById(req.params._id);
 
     if (error) {
       throw new ValidationError(error.message);
     }
 
-    /**
-     * User data
-     */
-    const user = await UserService.findById(req.params.id);
+    const user = await UserService.findById(req.params._id);
 
     if (user === null) {
       throw new UserNotFoundError();
@@ -61,33 +59,40 @@ const findById = async (
 
     res.status(200).send(user);
   } catch (error) {
-    if (error instanceof ValidationError) {
-      res.status(422).json({
-        error: "422",
-        message: error.message,
-      });
-      return next(error);
+    matchAndSendErrorResponse(error, res);
+    return next(error);
+  }
+};
+
+const findByEmail = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) => {
+  try {
+    const { error } = UserValidator.findByEmail(req.params.email);
+
+    if (error) throw new ValidationError(error.message);
+
+    const user = await UserService.findByProperty({ email: req.params.email });
+
+    if (user === null) {
+      throw new UserNotFoundError();
     }
 
-    if (error instanceof UserNotFoundError) {
-      res.status(404).json({
-        error: "404",
-        message: error.message,
-      });
-      return next(error);
-    }
-
-    res.status(500).json({ error: "500", message: error.message });
-
+    res.status(200).send(user);
+  } catch (error) {
+    matchAndSendErrorResponse(error, res);
     return next(error);
   }
 };
 
 /**
- * Create a user in database
+ * Create a new user
  * @param req
  * @param res
  * @param next
+ * @returns the created user object
  */
 const create = async (
   req: express.Request,
@@ -95,44 +100,31 @@ const create = async (
   next: express.NextFunction
 ) => {
   try {
-    /**
-     * Result of data validation . Undefined if valid.
-     */
     const { error } = UserValidator.create(req.body);
 
     if (error) {
       throw new ValidationError(error.message);
     }
 
-    /**
-     * User data
-     */
-    const user = await UserService.create(req.body);
-    res.status(200).send(user);
+    const saltRounds = 10;
+    const { email, password } = req.body;
+
+    const passwordHash = await bcrypt.hash(password, saltRounds);
+    const data = {
+      email,
+      password: passwordHash,
+    }
+
+    const user = await UserService.create(data);
+    res.status(200).send(user._id);
   } catch (error) {
-    if (error instanceof ValidationError) {
-      res.status(422).json({
-        error: "422",
-        message: error.message,
-      });
-      return next(error);
-    }
-
-    if (error.code && error.code === 11000) {
-      res.status(409).json({
-        error: "409",
-        message: "Email is used",
-      });
-      return next(error);
-    }
-
-    res.status(500).json({ error: "500", message: error.message });
+    matchAndSendErrorResponse(error, res);
     return next(error);
   }
 };
 
 /**
- * Update a user
+ * Update a user by ID
  * @param req
  * @param res
  * @param next
@@ -143,19 +135,13 @@ const updateById = async (
   next: express.NextFunction
 ) => {
   try {
-    /**
-     * Result of data validation . Undefined if valid.
-     */
     const { error } = UserValidator.updateById(req.body);
 
     if (error) {
       throw new ValidationError(error.message);
     }
 
-    /**
-     * Updated user
-     */
-    const user = await UserService.updateById(req.body.id, req.body);
+    const user = await UserService.updateById(req.body._id, req.body);
 
     if (user === null) {
       throw new UserNotFoundError();
@@ -163,31 +149,38 @@ const updateById = async (
 
     res.status(200).send(user);
   } catch (error) {
-    if (error instanceof ValidationError) {
-      res.status(422).json({
-        error: "422",
-        message: error.message,
-      });
-      return next(error);
+    matchAndSendErrorResponse(error, res);
+    return next(error);
+  }
+};
+
+/**
+ * Delete a user by ID
+ * @param req
+ * @param res
+ * @param next
+ */
+const deleteById = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) => {
+  try {
+    const { error } = UserValidator.deleteById(req.body._id);
+
+    if (error) {
+      throw new ValidationError(error.message);
     }
 
-    if (error.code && error.code === 11000) {
-      res.status(409).json({
-        error: "409",
-        message: "Email is used",
-      });
-      return next(error);
+    const user = await UserService.deleteById(req.body);
+
+    if (user.n === 0 && user.deletedCount === 0) {
+      throw new UserNotFoundError();
     }
 
-    if (error instanceof UserNotFoundError) {
-      res.status(404).json({
-        error: "404",
-        message: error.message,
-      });
-      return next(error);
-    }
-
-    res.status(500).json({ error: "500", message: error.message });
+    res.status(200).send(user);
+  } catch (error) {
+    matchAndSendErrorResponse(error, res);
     return next(error);
   }
 };
@@ -195,6 +188,8 @@ const updateById = async (
 export default {
   findAll,
   findById,
+  findByEmail,
   create,
   updateById,
+  deleteById,
 };
