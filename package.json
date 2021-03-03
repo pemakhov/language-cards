@@ -6,7 +6,7 @@
   "dependencies": {
     "@nestjs-modules/mailer": "1.5.1",
     "nodemailer": "6.4.11",
-    "pug": "3.0.0"
+    "pug": "3.0.1"
   },
   "devDependencies": {
     "cz-conventional-changelog": "^3.2.0"
